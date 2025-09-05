@@ -8,11 +8,10 @@ from tensorflow.keras.metrics import SparseCategoricalAccuracy  # type: ignore
 from pathlib import Path
 import librosa
 import numpy as np
-
 import matplotlib.pyplot as plt
 
 # --- 1. 設定 ---
-DATA_DIR = Path('../data/ESC-50-master/organized/segmented_data_split')
+DATA_DIR = Path('../../data/ESC-50-master/organized/segmented_data_split')
 MODEL_CHECKPOINT = "MIT/ast-finetuned-audioset-10-10-0.4593"
 BATCH_SIZE = 8
 NUM_EPOCHS = 10
