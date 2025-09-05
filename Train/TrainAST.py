@@ -1,3 +1,5 @@
+#transformers、tensorflowとtorchのバージョンが合わない
+
 import tensorflow as tf
 from transformers import AutoFeatureExtractor, TFAutoModelForAudioClassification
 from tensorflow.keras.optimizers import Adam  # type: ignore
