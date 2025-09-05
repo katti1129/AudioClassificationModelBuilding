@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 # --- 1. 設定 ---
 DATA_DIR = Path('../data/ESC-50-master/organized/segmented_data_split')
 MODEL_CHECKPOINT = "MIT/ast-finetuned-audioset-10-10-0.4593"
-BATCH_SIZE = 16
+BATCH_SIZE = 8
 NUM_EPOCHS = 10
 LEARNING_RATE = 3e-5
 
