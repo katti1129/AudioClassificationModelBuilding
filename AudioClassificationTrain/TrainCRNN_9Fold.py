@@ -119,7 +119,10 @@ def attention_pooling(inputs):
     weighted = layers.Multiply()([inputs, weights])
 
     # Keras Lambda層でreduce_sum
-    output = layers.Lambda(lambda x: tf.reduce_sum(x, axis=1))(weighted)
+    #output = layers.Lambda(lambda x: tf.reduce_sum(x, axis=1))(weighted)
+
+    # ★修正：ReduceSumLayer を使用
+    output = ReduceSumLayer(axis=1)(weighted)
 
     return output
 
@@ -180,6 +183,21 @@ class MelSequence(tf.keras.utils.Sequence):
         y = tf.keras.utils.to_categorical(y, num_classes=self.n_classes)
         return X, y
 
+@tf.keras.utils.register_keras_serializable()
+class ReduceSumLayer(layers.Layer):
+    def __init__(self, axis=1, **kwargs):
+        super().__init__(**kwargs)
+        self.axis = axis
+
+    def call(self, inputs):
+        return tf.reduce_sum(inputs, axis=self.axis)
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({"axis": self.axis})
+        return config
+
+
 # =========================================================
 # 3) モデル構築
 # =========================================================
@@ -205,7 +223,10 @@ def build_crnn(n_classes: int, time_dim: int):
 
     # --- 時間軸方向に変換 ---
     x = layers.Permute((2,1,3))(x)
-    x = layers.Reshape((-1, x.shape[2]*x.shape[3]))(x)
+    #x = layers.Reshape((-1, x.shape[2]*x.shape[3]))(x)
+
+    #修正。Reshape の代わりに TimeDistributed + Flatten を使う
+    x = layers.TimeDistributed(layers.Flatten())(x)
 
     # --- RNN部分 ---
     x = layers.Bidirectional(layers.LSTM(128, return_sequences=True))(x)
