@@ -1,0 +1,39 @@
+import librosa
+import soundfile as sf
+from pathlib import Path
+
+SRC = Path("../../data/combined_wav_16k_mono_folds_k5")
+OUT = Path("../../data/combined_wav_16k_mono_folds_k5_1p5s")
+CLASSES = ["siren", "other", "silence"]
+
+SR = 16000
+WIN = 1.5
+HOP = 0.5
+WIN_SAMPLES = int(SR * WIN)
+HOP_SAMPLES = int(SR * HOP)
+
+def main():
+    for fold in sorted(SRC.glob("fold*")):
+        for cls in CLASSES:
+            out_dir = OUT / fold.name / cls
+            out_dir.mkdir(parents=True, exist_ok=True)
+
+            files = sorted((fold / cls).glob("*.wav"))
+            for wav in files:
+                y, sr = librosa.load(wav, sr=SR)
+                length = len(y)
+                idx, wid = 0, 0
+
+                while idx + WIN_SAMPLES <= length:
+                    chunk = y[idx: idx + WIN_SAMPLES]
+                    out_path = out_dir / f"{wav.stem}_win{wid}.wav"
+                    sf.write(out_path, chunk, SR)
+                    wid += 1
+                    idx += HOP_SAMPLES
+
+                print(f"{fold.name} - {cls} - {wav.name}: {wid} windows 生成")
+
+    print("完了：全 fold に対して 1.5秒スライドウィンドウ生成")
+
+if __name__ == "__main__":
+    main()
