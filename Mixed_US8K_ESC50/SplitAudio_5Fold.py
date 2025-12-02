@@ -1,3 +1,4 @@
+#このコードの目的は「ファイルを均等に5分割すること」
 import random
 from pathlib import Path
 import shutil

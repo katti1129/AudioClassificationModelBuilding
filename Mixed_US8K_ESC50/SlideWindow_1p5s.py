@@ -1,3 +1,4 @@
+#Foldをfor文でまわす．クラスごとにfor文で回す．1.5sでスライドウィンドウ方式適用．CreateLeakfreeSplit_5Fold.pyの後に使用．
 import librosa
 import soundfile as sf
 from pathlib import Path

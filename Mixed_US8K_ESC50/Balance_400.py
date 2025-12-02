@@ -1,3 +1,5 @@
+#枚数を数えて400マイに削減．silenceを追加．
+
 import random
 import shutil
 from pathlib import Path

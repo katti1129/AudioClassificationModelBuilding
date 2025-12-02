@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # save as: Step1_LeakyFree_Split.py
+#UrbanSound8K（siren）・ESC-50（other）を リークフリーに5-foldへ分割。silenceを生成．
 
 import pandas as pd
 from pathlib import Path
