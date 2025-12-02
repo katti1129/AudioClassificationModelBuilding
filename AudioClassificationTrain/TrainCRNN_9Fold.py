@@ -107,7 +107,23 @@ def spec_augment(logmel, freq_mask_param=12, time_mask_param=8, p=0.5):
     x[:, t0:t0 + t] = 0
     return x
 
+
+
 # === Attention Pooling層 ===
+@tf.keras.utils.register_keras_serializable()
+class ReduceSumLayer(layers.Layer):
+    def __init__(self, axis=1, **kwargs):
+        super().__init__(**kwargs)
+        self.axis = axis
+
+    def call(self, inputs):
+        return tf.reduce_sum(inputs, axis=self.axis)
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({"axis": self.axis})
+        return config
+
 def attention_pooling(inputs):
     # 各時間ステップのスコアを計算
     score = layers.Dense(1, activation="tanh")(inputs)
@@ -183,19 +199,7 @@ class MelSequence(tf.keras.utils.Sequence):
         y = tf.keras.utils.to_categorical(y, num_classes=self.n_classes)
         return X, y
 
-@tf.keras.utils.register_keras_serializable()
-class ReduceSumLayer(layers.Layer):
-    def __init__(self, axis=1, **kwargs):
-        super().__init__(**kwargs)
-        self.axis = axis
 
-    def call(self, inputs):
-        return tf.reduce_sum(inputs, axis=self.axis)
-
-    def get_config(self):
-        config = super().get_config()
-        config.update({"axis": self.axis})
-        return config
 
 
 # =========================================================
@@ -203,6 +207,10 @@ class ReduceSumLayer(layers.Layer):
 # =========================================================
 def build_crnn(n_classes: int, time_dim: int):
     inp = layers.Input(shape=(N_MELS, time_dim, 1))
+
+    # time_dim ではなく None にする
+    #inp = layers.Input(shape=(N_MELS, None, 1))
+
     x = layers.Conv2D(32, (3,3), padding="same")(inp)
     x = layers.BatchNormalization()(x)
     x = layers.ReLU()(x)
