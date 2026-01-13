@@ -25,9 +25,9 @@ import gc  # ★ 追加
 # =========================================================
 # 1) 設定
 # =========================================================
-DATA_DIR = Path("../../data/clean_folds_5fold")
+DATA_DIR = Path("../../data/clean_folds_5fold_1p")
 SAMPLE_RATE = 16000
-DURATION = 1.5
+DURATION = 1.0
 WIN_SAMPLES = int(SAMPLE_RATE * DURATION)
 
 N_MELS = 128
@@ -35,10 +35,10 @@ N_FFT = 1024
 HOP_LENGTH = 512
 FMIN, FMAX = 20, 8000
 
-EPOCHS = 100
+EPOCHS = 50
 BATCH_SIZE = 32
 VAL_SIZE = 0.1
-PATIENCE = 20
+PATIENCE = 5
 SEED = 42
 
 # =========================================================
@@ -339,7 +339,7 @@ def run_fold_training():
         # ---- Build model ----
         model = build_crnn(n_classes, time_dim)
 
-        out_dir = Path(f"../../Result/runs_crnn_fold1to4_train_eval/{eval_fold.name}")
+        out_dir = Path(f"../../Result/runs_crnn_fold1to4_train_1s_eval/{eval_fold.name}")
         out_dir.mkdir(parents=True, exist_ok=True)
 
         # ---- Callbacks ----

@@ -27,12 +27,12 @@ import random
 # ============================================================
 # 1) 設定
 # ============================================================
-DATA_DIR = Path("../../../data/UrbanSound8k_ESC50_mix")
-OUT_DIR = Path("../../../Result/runs_crnn_holdout_mix")
+DATA_DIR = Path("../../../data/UrbanSound8K_ESC50_1p")
+OUT_DIR = Path("../../../Result/runs_crnn_slidwindow_1p_holdout_mix")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 
 SAMPLE_RATE = 16000
-DURATION = 1.5
+DURATION = 1.0
 WIN_SAMPLES = int(SAMPLE_RATE * DURATION)
 
 N_MELS = 128
@@ -42,9 +42,9 @@ FMIN, FMAX = 20, 8000
 
 TEST_SIZE = 0.2
 VAL_SIZE = 0.1
-EPOCHS = 100
+EPOCHS = 50
 BATCH_SIZE = 32
-PATIENCE = 20
+PATIENCE = 5
 SEED = 42
 
 

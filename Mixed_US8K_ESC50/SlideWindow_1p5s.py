@@ -1,14 +1,15 @@
-#Foldをfor文でまわす．クラスごとにfor文で回す．1.5sでスライドウィンドウ方式適用．CreateLeakfreeSplit_5Fold.pyの後に使用．
+#Foldをfor文でまわす．クラスごとにfor文で回す．1.0sでスライドウィンドウ方式適用．CreateLeakfreeSplit_5Fold.pyの後に使用．
 import librosa
 import soundfile as sf
 from pathlib import Path
 
-SRC = Path("../../data/combined_wav_16k_mono_folds_k5")
-OUT = Path("../../data/combined_wav_16k_mono_folds_k5_1p5s")
+SRC = Path("../../data/clean_folds_5fold")
+OUT = Path("../../data/clean_folds_5fold_1p")
+
 CLASSES = ["siren", "other", "silence"]
 
 SR = 16000
-WIN = 1.5
+WIN = 1.0
 HOP = 0.5
 WIN_SAMPLES = int(SR * WIN)
 HOP_SAMPLES = int(SR * HOP)
